@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أشجار نسب النبي ﷺ وصحابته (A5)</title>
+    
+    <!-- مكتبة Bootstrap 5 RTL -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    
+    <!-- الخطوط -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Alkalami&family=Reem+Kufi:wght@400;700&display=swap');
+
+        @page {
+            size: A5 portrait;
+            margin: 0;
+        }
+
+        :root {
+            --trunk-color: #5b4030;
+            --branch-color: #694b37;
+            --leaf-parents: #d8c46a;
+            --leaf-wives: #91a94b;
+            --leaf-children: #477b43;
+            --leaf-grands: #4c8b77;
+            --leaf-lineage: #708d42;
+            --leaf-sahaba: #557f49;
+            --bg-color: #faf6e9;
+        }
+
+        body {
+            font-family: 'Alkalami', serif;
+            background-color: #e9ecef;
+            background-image: radial-gradient(#d3c7b1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* حاوية الصفحات */
+        .book-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .page {
+            width: 148mm;
+            height: 210mm;
+            background: var(--bg-color);
+            position: relative;
+            page-break-after: always;
+            break-after: page;
+            flex: none;
+        }
+
+        header {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 5mm 3mm 3mm;
+            background: linear-gradient(to bottom, rgba(250,246,233,.99) 72%, rgba(250,246,233,0));
+        }
+
+        h1 {
+            font-family: 'Reem Kufi', sans-serif;
+            color: #173f2c;
+            font-size: 1.35rem;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-family: 'Reem Kufi', sans-serif;
+            color: #76520a;
+            font-size: 0.8rem;
+            line-height: 1.2;
+        }
+
+        .tree-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+        }
+
+        .page-footer {
+            position: absolute;
+            bottom: 3.5mm;
+            width: 100%;
+            font-size: 0.7rem;
+            color: #604536;
+            font-family: 'Reem Kufi', sans-serif;
+            z-index: 20;
+        }
+
+        .leaf-text, .leaf-text-dark {
+            font-family: 'Alkalami', serif;
+            color: #17251b !important;
+            fill: #17251b !important;
+            font-weight: 700 !important;
+            text-anchor: middle;
+            paint-order: stroke fill;
+            stroke: #fffdf3 !important;
+            stroke-width: 3px !important;
+            stroke-linejoin: round;
+            font-size: 26px;
+        }
+
+        .leaf-subtext, .leaf-subtext-dark {
+            font-family: 'Alkalami', serif;
+            color: #17251b !important;
+            fill: #17251b !important;
+            font-weight: 700 !important;
+            text-anchor: middle;
+            paint-order: stroke fill;
+            stroke: #fffdf3 !important;
+            stroke-width: 2.5px !important;
+            font-size: 19px !important;
+        }
+
+        /* حركة الأوراق (الأنيميشن) */
+        .leaf-animate {
+            transform-origin: 0 0;
+            animation: sway 3s ease-in-out infinite;
+        }
+        
+        g:nth-child(even) > g > .leaf-animate,
+        g:nth-child(even) > .leaf-animate {
+            animation-duration: 4s;
+            animation-direction: alternate-reverse;
+        }
+        
+        @keyframes sway {
+            0% { transform: rotate(-2.5deg); }
+            50% { transform: rotate(2.5deg); }
+            100% { transform: rotate(-2.5deg); }
+        }
+
+        @media print {
+            html, body { 
+                background: none; 
+                padding: 0; 
+                margin: 0; 
+            }
+            .book-container { 
+                gap: 0; 
+                padding: 0; 
+            }
+            .page {
+                width: 148mm;
+                height: 210mm;
+                margin: 0;
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .page:last-child { 
+                page-break-after: auto; 
+                break-after: auto; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- قوالب الأوراق (SVG Defs) -->
+    <svg style="width:0; height:0; position:absolute;">
+        <defs>
+            <filter id="drop-shadow" x="-25%" y="-25%" width="150%" height="150%">
+                <feDropShadow dx="1.5" dy="3" stdDeviation="2" flood-color="#241b16" flood-opacity="0.18"/>
+            </filter>
+            
+            <path id="leaf-shape" d="M 0 8 C -68 -6 -92 -66 -8 -145 C 2 -154 88 -78 0 8 Z" filter="url(#drop-shadow)"/>
+            <path id="leaf-shape-small" d="M 0 6 C -50 -4 -68 -48 -6 -116 C 5 -123 67 -58 0 6 Z" filter="url(#drop-shadow)"/>
+
+            <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFD700" />
+                <stop offset="50%" stop-color="#DAA520" />
+                <stop offset="100%" stop-color="#B8860B" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- حاوية الكتيب -->
+    <div class="book-container">
+
+        <!-- ========================================== -->
+        <!-- الصفحة الأولى: النسب الشريف والرسول ﷺ (شجر حقيقي متفرع) -->
+        <!-- ========================================== -->
+        <div class="page shadow-lg rounded-4 overflow-hidden border border-2 border-white">
+            <header class="d-flex flex-column align-items-center text-center">
+                <h1 class="fw-bold">شجرة نسب النبي محمد ﷺ</h1>
+                <div class="subtitle fw-bold">النسب الشريف من إبراهيم عليه السلام إلى النبي محمد ﷺ</div>
+            </header>
+            
+            <svg class="tree-container" viewBox="0 0 1000 1414">
+                <!-- جذع شجرة حقيقي متفرع وعضوي -->
+                <path d="M 450 1414 C 445 1300 470 1200 480 1100 C 490 1000 480 900 500 800 C 520 900 510 1000 520 1100 C 530 1200 555 1300 550 1414 Z" fill="var(--trunk-color)" stroke="#493124" stroke-width="4"/>
+                
+                <!-- فروع متسلسلة تشبه الشجر الحقيقي لتجنب التلاحم وإبعاد الأوراق -->
+                <path d="
+                    M 500 1180 Q 380 1160 270 1130
+                    M 500 1180 Q 620 1160 730 1130
+                    M 495 1100 Q 360 1070 240 1030
+                    M 495 1100 Q 635 1070 760 1030
+                    M 490 1020 Q 380 980 270 930
+                    M 490 1020 Q 620 980 730 930
+                    M 495 940 Q 350 895 210 850
+                    M 495 940 Q 650 895 790 850
+                    M 500 860 Q 380 810 260 760
+                    M 500 860 Q 620 810 740 760
+                    M 505 780 Q 350 725 200 670
+                    M 505 780 Q 650 725 800 670
+                    M 500 700 Q 380 645 270 590
+                    M 500 700 Q 620 645 730 590
+                    M 500 620 Q 340 560 190 500
+                    M 500 620 Q 660 560 810 500
+                    M 500 540 Q 400 480 320 420
+                    M 500 540 Q 600 480 680 420
+                    M 500 460 Q 440 395 390 330
+                    M 500 460 Q 560 395 610 330
+                " stroke="var(--branch-color)" stroke-width="10" fill="none" stroke-linecap="round"/>
+
+                <!-- أوراق النسب مرتبة ومتباعدة بعناية تامة لعدم التلامس -->
+                <g transform="translate(270, 1130)"><g transform="rotate(-18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-62" class="leaf-text" style="font-size:22px;">إبراهيم</text><text y="-38" class="leaf-subtext">عليه السلام</text></g></g></g>
+                <g transform="translate(730, 1130)"><g transform="rotate(18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-62" class="leaf-text" style="font-size:22px;">إسماعيل</text><text y="-38" class="leaf-subtext">عليه السلام</text></g></g></g>
+                
+                <g transform="translate(240, 1030)"><g transform="rotate(-18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">عدنان</text></g></g></g>
+                <g transform="translate(760, 1030)"><g transform="rotate(18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">معد</text></g></g></g>
+                
+                <g transform="translate(270, 930)"><g transform="rotate(-18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">نزار</text></g></g></g>
+                <g transform="translate(730, 930)"><g transform="rotate(18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">مضر</text></g></g></g>
+                
+                <g transform="translate(210, 850)"><g transform="rotate(-18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">إلياس</text></g></g></g>
+                <g transform="translate(790, 850)"><g transform="rotate(18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">مدركة</text></g></g></g>
+                
+                <g transform="translate(260, 760)"><g transform="rotate(-18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">خزيمة</text></g></g></g>
+                <g transform="translate(740, 760)"><g transform="rotate(18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">كنانة</text></g></g></g>
+                
+                <g transform="translate(200, 670)"><g transform="rotate(-18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">النضر</text></g></g></g>
+                <g transform="translate(800, 670)"><g transform="rotate(18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">مالك</text></g></g></g>
+                
+                <g transform="translate(270, 590)"><g transform="rotate(-18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-58" class="leaf-text" style="font-size:22px;">فهر</text><text y="-36" class="leaf-subtext">قريش</text></g></g></g>
+                <g transform="translate(730, 590)"><g transform="rotate(18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">غالب</text></g></g></g>
+                
+                <g transform="translate(190, 500)"><g transform="rotate(-18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">لؤي</text></g></g></g>
+                <g transform="translate(810, 500)"><g transform="rotate(18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">كعب</text></g></g></g>
+                
+                <g transform="translate(320, 420)"><g transform="rotate(-18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">مرة</text></g></g></g>
+                <g transform="translate(680, 420)"><g transform="rotate(18)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">كلاب</text></g></g></g>
+                
+                <g transform="translate(390, 330)"><g transform="rotate(-12)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">قصي</text></g></g></g>
+                <g transform="translate(610, 330)"><g transform="rotate(12)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">عبد مناف</text></g></g></g>
+                
+                <path d="M 610 330 Q 550 280 500 240" stroke="var(--branch-color)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <g transform="translate(390, 240)"><g transform="rotate(-10)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:22px;">هاشم</text></g></g></g>
+                <g transform="translate(500, 240)"><g transform="rotate(0)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-lineage)" transform="scale(1.15)"/><text y="-50" class="leaf-text" style="font-size:21px;">عبد المطلب</text></g></g></g>
+                
+                <path d="M 500 240 Q 500 190 500 155" stroke="var(--branch-color)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <g transform="translate(500, 155)"><g transform="rotate(0)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-parents)" transform="scale(1.15)"/><text y="-58" class="leaf-text leaf-text-dark" style="font-size:20px;">عبد الله</text><text y="-36" class="leaf-subtext leaf-text-dark" style="font-size:16px;">بن عبد المطلب</text></g></g></g>
+                
+                <path d="M 500 155 Q 500 115 500 85" stroke="var(--branch-color)" stroke-width="7" fill="none" stroke-linecap="round"/>
+                <g transform="translate(500, 75)"><g transform="rotate(0)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="url(#gold-gradient)" transform="scale(1.5)"/><text y="-100" class="leaf-text leaf-text-dark" style="font-size: 32px;">محمد ﷺ</text><text y="-62" class="leaf-subtext leaf-text-dark" style="font-size: 18px; font-weight:bold;">رسول الله</text></g></g></g>
+            </svg>
+
+            <div class="page-footer d-flex justify-content-between px-4 pb-2">
+                <span class="fw-bold">إعداد: سعيد على احمد سعيد سيسى</span>
+                <span class="fw-bold">الصفحة 1 من 4</span>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- الصفحة الثانية: عائلة النبي ﷺ (متباعدة وتصميم شجري حقيقي) -->
+        <!-- ========================================== -->
+        <div class="page shadow-lg rounded-4 overflow-hidden border border-2 border-white">
+            <header class="d-flex flex-column align-items-center text-center">
+                <h1 class="fw-bold">شجرة عائلة النبي ﷺ</h1>
+                <div class="subtitle fw-bold">الآباء، الزوجات، الأبناء والأحفاد</div>
+            </header>
+
+            <svg class="tree-container" viewBox="0 0 1000 1414">
+                <!-- جذع الشجرة بتصميم متعرج وطبيعي -->
+                <path d="M 450 1414 C 445 1250 460 1100 480 900 C 490 700 480 500 500 350 C 520 500 510 700 520 900 C 540 1100 555 1250 550 1414 Z" fill="var(--trunk-color)" stroke="#493124" stroke-width="4"/>
+                
+                <!-- الفروع المتفرعة بشكل عضوي لليمين واليسار -->
+                <path d="
+                    /* فروع الوالدين */
+                    M 500 1200 Q 400 1200 320 1180
+                    M 500 1200 Q 600 1200 680 1180
+                    
+                    /* فروع الزوجات (اليسار) */
+                    M 490 1080 Q 350 1070 250 1050
+                    M 380 1075 Q 320 980 280 950
+                    M 495 950 Q 300 950 180 920
+                    M 350 950 Q 280 840 220 800
+                    M 300 950 Q 340 860 350 820
+                    M 490 780 Q 320 750 180 700
+                    M 350 765 Q 280 650 250 600
+                    M 495 620 Q 320 580 200 500
+                    M 350 600 Q 320 480 300 420
+                    M 280 550 Q 180 460 150 400
+
+                    /* فروع الأبناء (اليمين) */
+                    M 490 1050 Q 620 1040 750 1020
+                    M 620 1045 Q 660 960 680 920
+                    M 495 880 Q 640 850 780 820
+                    M 640 865 Q 700 780 720 720
+                    M 680 850 Q 780 760 850 700
+                    M 490 700 Q 620 650 750 580
+                    M 600 670 Q 660 550 680 480
+
+                    /* فروع الأحفاد (في قمة الشجرة) */
+                    M 495 520 Q 420 400 380 300
+                    M 490 500 Q 480 350 480 220
+                    M 505 520 Q 580 400 620 280
+                    M 500 600 Q 620 500 720 400
+                    M 500 480 Q 540 400 550 350
+                " stroke="var(--branch-color)" stroke-width="8" fill="none" stroke-linecap="round"/>
+
+                <!-- ================= الوالدان ================= -->
+                <g transform="translate(320, 1180)"><g transform="rotate(-20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-parents)" transform="scale(1.15)"/><text y="-75" class="leaf-text leaf-text-dark" style="font-size:22px;">عبد الله بن</text><text y="-50" class="leaf-text leaf-text-dark" style="font-size:22px;">عبد المطلب</text></g></g></g>
+                <g transform="translate(680, 1180)"><g transform="rotate(20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-parents)" transform="scale(1.15)"/><text y="-75" class="leaf-text leaf-text-dark" style="font-size:22px;">آمنة بنت</text><text y="-50" class="leaf-text leaf-text-dark" style="font-size:22px;">وهب</text></g></g></g>
+
+                <!-- ================= الزوجات (موزعة بشكل طبيعي على اليسار) ================= -->
+                <g transform="translate(250, 1050)"><g transform="rotate(-25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-wives)" transform="scale(1.05)"/><text y="-68" class="leaf-text leaf-text-dark" style="font-size:19px;">خديجة بنت خويلد</text></g></g></g>
+                <g transform="translate(280, 950)"><g transform="rotate(-15)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-wives)" transform="scale(1.05)"/><text y="-68" class="leaf-text leaf-text-dark" style="font-size:19px;">سودة بنت زمعة</text></g></g></g>
+                <g transform="translate(180, 920)"><g transform="rotate(-30)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-wives)" transform="scale(1.05)"/><text y="-68" class="leaf-text leaf-text-dark" style="font-size:18px;">عائشة بنت أبي بكر</text></g></g></g>
+                <g transform="translate(220, 800)"><g transform="rotate(-20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-wives)" transform="scale(1.05)"/><text y="-68" class="leaf-text leaf-text-dark" style="font-size:19px;">حفصة بنت عمر</text></g></g></g>
+                <g transform="translate(350, 820)"><g transform="rotate(-10)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-wives)" transform="scale(1.05)"/><text y="-68" class="leaf-text leaf-text-dark" style="font-size:18px;">زينب بنت خزيمة</text></g></g></g>
+                <g transform="translate(180, 700)"><g transform="rotate(-35)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-wives)" transform="scale(1.05)"/><text y="-68" class="leaf-text leaf-text-dark" style="font-size:18px;">زينب بنت جحش</text></g></g></g>
+                <g transform="translate(250, 600)"><g transform="rotate(-20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-wives)" transform="scale(1.05)"/><text y="-68" class="leaf-text leaf-text-dark" style="font-size:18px;">أم سلمة (هند)</text></g></g></g>
+                <g transform="translate(200, 500)"><g transform="rotate(-25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-wives)" transform="scale(1.05)"/><text y="-68" class="leaf-text leaf-text-dark" style="font-size:17px;">جويرية بنت الحارث</text></g></g></g>
+                <g transform="translate(300, 420)"><g transform="rotate(-15)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-wives)" transform="scale(1.05)"/><text y="-68" class="leaf-text leaf-text-dark" style="font-size:18px;">أم حبيبة (رملة)</text></g></g></g>
+                <g transform="translate(150, 400)"><g transform="rotate(-35)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-wives)" transform="scale(1.05)"/><text y="-68" class="leaf-text leaf-text-dark" style="font-size:18px;">صفية بنت حيي</text></g></g></g>
+
+                <!-- ================= الأبناء (موزعة بشكل طبيعي على اليمين) ================= -->
+                <g transform="translate(750, 1020)"><g transform="rotate(25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-children)" transform="scale(1.1)"/><text y="-65" class="leaf-text" style="font-size:21px;">القاسم</text></g></g></g>
+                <g transform="translate(680, 920)"><g transform="rotate(15)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-children)" transform="scale(1.1)"/><text y="-65" class="leaf-text" style="font-size:21px;">زينب</text></g></g></g>
+                <g transform="translate(780, 820)"><g transform="rotate(30)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-children)" transform="scale(1.1)"/><text y="-65" class="leaf-text" style="font-size:21px;">رقية</text></g></g></g>
+                <g transform="translate(720, 720)"><g transform="rotate(20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-children)" transform="scale(1.1)"/><text y="-65" class="leaf-text" style="font-size:20px;">أم كلثوم</text></g></g></g>
+                <g transform="translate(850, 700)"><g transform="rotate(35)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-children)" transform="scale(1.1)"/><text y="-72" class="leaf-text" style="font-size:21px;">فاطمة</text><text y="-50" class="leaf-text" style="font-size:19px;">الزهراء</text></g></g></g>
+                <g transform="translate(750, 580)"><g transform="rotate(25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-children)" transform="scale(1.1)"/><text y="-65" class="leaf-text" style="font-size:21px;">عبد الله</text></g></g></g>
+                <g transform="translate(680, 480)"><g transform="rotate(15)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-children)" transform="scale(1.1)"/><text y="-65" class="leaf-text" style="font-size:21px;">إبراهيم</text></g></g></g>
+
+                <!-- ================= الأحفاد (في قمة الشجرة) ================= -->
+                <g transform="translate(380, 300)"><g transform="rotate(-20)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-grands)" transform="scale(1.2)"/><text y="-58" class="leaf-text" style="font-size:20px;">الحسن</text></g></g></g>
+                <g transform="translate(480, 220)"><g transform="rotate(-5)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-grands)" transform="scale(1.2)"/><text y="-58" class="leaf-text" style="font-size:20px;">الحسين</text></g></g></g>
+                <g transform="translate(620, 280)"><g transform="rotate(20)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-grands)" transform="scale(1.2)"/><text y="-58" class="leaf-text" style="font-size:20px;">المحسن</text></g></g></g>
+                <g transform="translate(720, 400)"><g transform="rotate(30)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-grands)" transform="scale(1.2)"/><text y="-58" class="leaf-text" style="font-size:19px;">أم كلثوم</text></g></g></g>
+                <g transform="translate(550, 350)"><g transform="rotate(10)"><g class="leaf-animate"><use href="#leaf-shape-small" stroke="#3f5f35" stroke-width="2.2" fill="var(--leaf-grands)" transform="scale(1.2)"/><text y="-58" class="leaf-text" style="font-size:19px;">زينب</text></g></g></g>
+            </svg>
+
+            <div class="page-footer d-flex justify-content-between px-4 pb-2">
+                <span class="fw-bold">إعداد: سعيد على احمد سعيد سيسى</span>
+                <span class="fw-bold">الصفحة 2 من 4</span>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- الصفحة الثالثة: العشرة المبشرون بالجنة (متباعدة تماماً) -->
+        <!-- ========================================== -->
+        <div class="page shadow-lg rounded-4 overflow-hidden border border-2 border-white">
+            <header class="d-flex flex-column align-items-center text-center">
+                <h1 class="fw-bold">العشرة المبشرون بالجنة</h1>
+                <div class="subtitle fw-bold">صحابة بشرهم النبي ﷺ بالجنة</div>
+            </header>
+
+            <svg class="tree-container" viewBox="0 0 1000 1414">
+                <path d="M 460 1414 Q 500 1050 500 650 Q 500 1050 540 1414 Z" fill="var(--trunk-color)"/>
+                <path d="M 490 1150 Q 365 1100 250 1050 M 490 1150 Q 635 1100 750 1050 M 490 980 Q 330 930 200 870 M 490 980 Q 670 930 800 870 M 490 810 Q 365 760 250 700 M 490 810 Q 635 760 750 700 M 490 640 Q 330 590 200 530 M 490 640 Q 670 590 800 530 M 490 470 Q 365 420 250 360 M 490 470 Q 635 420 750 360" stroke="var(--branch-color)" stroke-width="12" fill="none" stroke-linecap="round"/>
+
+                <g transform="translate(250, 1050)"><g transform="rotate(-20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="url(#gold-gradient)" transform="scale(1.2)"/><text y="-72" class="leaf-text leaf-text-dark" style="font-size:21px;">أبو بكر الصديق</text></g></g></g>
+                <g transform="translate(750, 1050)"><g transform="rotate(20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="url(#gold-gradient)" transform="scale(1.2)"/><text y="-72" class="leaf-text leaf-text-dark" style="font-size:21px;">عمر بن الخطاب</text></g></g></g>
+                
+                <g transform="translate(200, 870)"><g transform="rotate(-25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="url(#gold-gradient)" transform="scale(1.2)"/><text y="-72" class="leaf-text leaf-text-dark" style="font-size:21px;">عثمان بن عفان</text></g></g></g>
+                <g transform="translate(800, 870)"><g transform="rotate(25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="url(#gold-gradient)" transform="scale(1.2)"/><text y="-72" class="leaf-text leaf-text-dark" style="font-size:21px;">علي بن أبي طالب</text></g></g></g>
+
+                <g transform="translate(250, 700)"><g transform="rotate(-20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.1)"/><text y="-68" class="leaf-text" style="font-size:20px;">طلحة بن عبيد الله</text></g></g></g>
+                <g transform="translate(750, 700)"><g transform="rotate(20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.1)"/><text y="-68" class="leaf-text" style="font-size:20px;">الزبير بن العوام</text></g></g></g>
+                
+                <g transform="translate(200, 530)"><g transform="rotate(-25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.1)"/><text y="-68" class="leaf-text" style="font-size:19px;">عبدالرحمن بن عوف</text></g></g></g>
+                <g transform="translate(800, 530)"><g transform="rotate(25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.1)"/><text y="-68" class="leaf-text" style="font-size:20px;">سعد بن أبي وقاص</text></g></g></g>
+                
+                <g transform="translate(250, 360)"><g transform="rotate(-20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.1)"/><text y="-68" class="leaf-text" style="font-size:20px;">سعيد بن زيد</text></g></g></g>
+                <g transform="translate(750, 360)"><g transform="rotate(20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.1)"/><text y="-68" class="leaf-text" style="font-size:19px;">أبو عبيدة بن الجراح</text></g></g></g>
+            </svg>
+
+            <div class="page-footer d-flex justify-content-between px-4 pb-2">
+                <span class="fw-bold">إعداد: سعيد على احمد سعيد سيسى</span>
+                <span class="fw-bold">الصفحة 3 من 4</span>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- الصفحة الرابعة: الصحابة من غير العرب (بدون أسامة بن زيد ومع تباعد تام) -->
+        <!-- ========================================== -->
+        <div class="page shadow-lg rounded-4 overflow-hidden border border-2 border-white">
+            <header class="d-flex flex-column align-items-center text-center">
+                <h1 class="fw-bold">أصحاب النبي ﷺ</h1>
+                <div class="subtitle fw-bold">أشهر الصحابة من غير العرب</div>
+            </header>
+
+            <svg class="tree-container" viewBox="0 0 1000 1414">
+                <path d="M 460 1414 Q 500 1100 500 900 Q 500 1100 540 1414 Z" fill="var(--trunk-color)"/>
+                
+                <!-- فروع منسقة ومنتظمة بعناية فائقة لتفادي أي تلامس نهائياً -->
+                <path d="
+                    M 490 1150 Q 360 1100 240 1050
+                    M 490 1150 Q 640 1100 760 1050
+                    M 490 1000 Q 310 950 170 900
+                    M 490 1000 Q 690 950 830 900
+                    M 490 850 Q 360 800 240 750
+                    M 490 850 Q 640 800 760 750
+                    M 490 700 Q 310 650 170 600
+                    M 490 700 Q 690 650 830 600
+                " stroke="var(--branch-color)" stroke-width="12" fill="none" stroke-linecap="round"/>
+
+                <!-- توزيع الأوراق بشكل شجري متوازن ومتباعد -->
+                <g transform="translate(240, 1050)"><g transform="rotate(-20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.15)"/><text y="-72" class="leaf-text" style="font-size:21px;">سلمان الفارسي</text></g></g></g>
+                <g transform="translate(760, 1050)"><g transform="rotate(20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.15)"/><text y="-72" class="leaf-text" style="font-size:21px;">صهيب الرومي</text></g></g></g>
+
+                <g transform="translate(170, 900)"><g transform="rotate(-25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.15)"/><text y="-72" class="leaf-text" style="font-size:21px;">باذان بن ساسان</text></g></g></g>
+                <g transform="translate(830, 900)"><g transform="rotate(25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.15)"/><text y="-72" class="leaf-text" style="font-size:21px;">عداس النينوي</text></g></g></g>
+
+                <g transform="translate(240, 750)"><g transform="rotate(-20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.15)"/><text y="-72" class="leaf-text" style="font-size:21px;">فيروز الديلمي</text></g></g></g>
+                <g transform="translate(760, 750)"><g transform="rotate(20)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.15)"/><text y="-72" class="leaf-text" style="font-size:21px;">أنجسة الحبشي</text></g></g></g>
+
+                <g transform="translate(170, 600)"><g transform="rotate(-25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.15)"/><text y="-72" class="leaf-text" style="font-size:21px;">شقران</text></g></g></g>
+                <g transform="translate(830, 600)"><g transform="rotate(25)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.15)"/><text y="-72" class="leaf-text" style="font-size:21px;">وحشي بن حرب</text></g></g></g>
+
+                <!-- الأوراق في المنتصف على محور الجذع مرتبة بمسافات رأسية واضحة -->
+                <g transform="translate(500, 1180)"><g transform="rotate(0)"><g class="leaf-animate"><use href="#leaf-shape" stroke="#3f5f35" stroke-width="2.5" fill="var(--leaf-sahaba)" transform="scale(1.15)"/><text y="-72" class="leaf-text" style="font-size:21px;">بلال بن رباح</text></g></g></g>
+            </svg>
+
+            <div class="page-footer d-flex justify-content-between px-4 pb-2">
+                <span class="fw-bold">إعداد: سعيد على احمد سعيد سيسى</span>
+                <span class="fw-bold">الصفحة 4 من 4</span>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
